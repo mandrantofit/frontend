@@ -27,10 +27,10 @@ const Navbar = () => {
               <Link className="nav-link" to="/materiel">Matériel</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/inventaire">Inventaire</Link>
+              <Link className="nav-link" to="/affectation">Affectation</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/affectation">Affectation</Link>
+              <Link className="nav-link" to="/inventaire">Inventaire</Link>
             </li>
           </ul>
           {/* Déplacement du bouton Logout dans la liste des liens */}

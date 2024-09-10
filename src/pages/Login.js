@@ -13,8 +13,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/login', { email, password });
-      const { token } = response.data;
-      localStorage.setItem('token', token); // Stocker le token dans le localStorage
+      const { token, email: responseEmail, type } = response.data;
+      
+      // Stocker les données dans le localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('email', responseEmail);
+      localStorage.setItem('type', type);
+
       navigate('/materiel'); // Rediriger vers la page "Materiel"
     } catch (err) {
       setError('Invalid credentials');
@@ -25,7 +30,7 @@ const Login = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card shadow-lg" style={{ width: '100%', maxWidth: '400px' }}>
         <div className="card-body">
-          <h4 className="card-title text-center mb-4">Authentifier vous d'abords</h4>
+          <h4 className="card-title text-center mb-4">Authentifiez-vous</h4>
           <form onSubmit={handleSubmit}>
             <div className="form-group mb-3">
               <label htmlFor="email">Email</label>
@@ -41,7 +46,7 @@ const Login = () => {
             </div>
 
             <div className="form-group mb-3">
-              <label htmlFor="password">mots de passe</label>
+              <label htmlFor="password">Mot de passe</label>
               <input
                 type="password"
                 className="form-control"

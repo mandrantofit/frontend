@@ -142,6 +142,19 @@ const Materiel = () => {
   const handleCancel = () => {
     setShowModal(false);
     setShowUpdateModal(false);
+    setSelectedId(null);  // Réinitialiser la sélection
+    setFormData({
+      modele: '',
+      marque: '',
+      numero_serie: '',
+      numero_inventaire: '',
+      ID_categorie: '',
+      ID_etat: '',
+      ID_fournisseur: '',
+      bon_de_commande: '',
+      config: '',
+      bon_de_livraison: '',
+    });  // Réinitialiser le formulaire
   };
 
   const handleEdit = (id) => {

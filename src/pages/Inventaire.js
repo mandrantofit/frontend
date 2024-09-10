@@ -23,7 +23,8 @@ const Inventaire = () => {
   }, []);
 
   const columns = [
-    { field: 'modele', headerName: 'Modèle', width: 600 },
+    { field: 'marque', headerName: 'Marque', width: 200 },
+    { field: 'modele', headerName: 'Modèle', width: 750 },
     { field: 'non_attribue', headerName: 'Non Attribué', width: 100 },
   ];
 
@@ -41,7 +42,7 @@ const Inventaire = () => {
               </div>
             </div>
           ) : (
-            <div className="d-flex justify-content-center" style={{ height: 400, width: '70%', marginLeft:'10rem' }}>
+            <div className="d-flex justify-content-center" style={{ height: 400, width: '100%' }}>
               <DataGrid
                 rows={inventaire}
                 columns={columns}
