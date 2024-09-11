@@ -3,6 +3,8 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Admin = () => {
   const [utilisateurs, setUtilisateurs] = useState([]);
@@ -40,8 +42,10 @@ const Admin = () => {
     try {
       if (isEditMode) {
         await axios.put(`http://localhost:8000/login/${selectedId}`, formData);
+        toast.success('modification fait avec succés');
       } else {
         await axios.post('http://localhost:8000/login/ajout', formData);
+        toast.success('ajout fait avec succés');
       }
       setFormData({
         email: '',
@@ -50,7 +54,7 @@ const Admin = () => {
       setShowModal(false);
       fetchUtilisateurs();
     } catch (error) {
-      console.error('Erreur lors de l\'ajout ou de la mise à jour de l\'utilisateur:', error);
+      toast.error('Erreur lors de l\'ajout ou de la mise à jour de l\'utilisateur:', error);
     }
   };
 
@@ -70,8 +74,9 @@ const Admin = () => {
       try {
         await axios.delete(`http://localhost:8000/login/${id}`);
         fetchUtilisateurs();
+        toast.success("Utilisateur supprimmer avec succeés");
       } catch (error) {
-        console.error("Erreur lors de la suppression de l'utilisateur:", error);
+        toast.error("Erreur lors de la suppression de l'utilisateur:", error);
       }
     }
   };
@@ -189,6 +194,7 @@ const Admin = () => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Inventaire = () => {
   const [inventaire, setInventaire] = useState([]);
@@ -14,7 +16,7 @@ const Inventaire = () => {
         setInventaire(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Erreur lors de la récupération de l\'inventaire :', error);
+        toast.error('Erreur lors de la récupération de l\'inventaire :', error);
         setLoading(false);
       }
     };
@@ -23,8 +25,9 @@ const Inventaire = () => {
   }, []);
 
   const columns = [
-    { field: 'marque', headerName: 'Marque', width: 200 },
-    { field: 'modele', headerName: 'Modèle', width: 750 },
+    { field: 'code', headerName: 'Code', width: 250 },
+    { field: 'marque', headerName: 'Marque', width: 700 },
+    //{ field: 'modele', headerName: 'Modèle', width: 750 },
     { field: 'non_attribue', headerName: 'Non Attribué', width: 100 },
   ];
 
@@ -47,7 +50,7 @@ const Inventaire = () => {
                 rows={inventaire}
                 columns={columns}
                 pageSize={5}
-                getRowId={(row) => row.modele}
+                getRowId={(row) => row.code}
                 rowsPerPageOptions={[5]}
                 disableSelectionOnClick
                 className="bg-light"
@@ -57,6 +60,7 @@ const Inventaire = () => {
         </div>
 
       </div>
+      <ToastContainer />
     </div>
   );
 };

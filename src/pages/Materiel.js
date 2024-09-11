@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Materiel = () => {
   const [materiels, setMateriels] = useState([]);
@@ -12,6 +14,7 @@ const Materiel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
+    code: '',
     modele: '',
     marque: '',
     numero_serie: '',
@@ -83,6 +86,7 @@ const Materiel = () => {
     try {
       await axios.post('http://localhost:8000/materiel', formData);
       setFormData({
+        code: '',
         modele: '',
         marque: '',
         numero_serie: '',
@@ -94,11 +98,11 @@ const Materiel = () => {
         config: '',
         bon_de_livraison: '',
       });
-      alert('Matériel ajouté avec succès !');
+      toast.success('Matériel ajouté avec succès !');
       setShowModal(false);
       fetchMateriel();
     } catch (error) {
-      setError("Une erreur est survenue lors de l'ajout du matériel.");
+      toast.error("Une erreur est survenue lors de l'ajout du matériel.");
     }
   };
 
@@ -107,6 +111,7 @@ const Materiel = () => {
     try {
       await axios.put(`http://localhost:8000/materiel/${selectedId}`, formData);
       setFormData({
+        code: '',
         modele: '',
         marque: '',
         numero_serie: '',
@@ -118,22 +123,22 @@ const Materiel = () => {
         config: '',
         bon_de_livraison: '',
       });
-      alert('Matériel mis à jour avec succès !');
+      toast.success('Matériel mis à jour avec succès !');
       setShowUpdateModal(false);
       fetchMateriel();
     } catch (error) {
-      setError("Une erreur est survenue lors de la mise à jour du matériel.");
+      toast.error("Une erreur est survenue lors de la mise à jour du matériel.");
     }
   };
   const handleDelete = async (id) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce matériel ?")) {
       try {
         await axios.delete(`http://localhost:8000/materiel/${id}`);
-        alert('Matériel supprimé avec succès !');
+        toast.success('Matériel supprimé avec succès !');
         fetchMateriel();  // Mettre à jour la liste après suppression
       } catch (error) {
         console.error("Erreur lors de la suppression du matériel:", error);
-        setError("Une erreur est survenue lors de la suppression du matériel.");
+        toast.error("Une erreur est survenue lors de la suppression du matériel.");
       }
     }
   };
@@ -144,6 +149,7 @@ const Materiel = () => {
     setShowUpdateModal(false);
     setSelectedId(null);  // Réinitialiser la sélection
     setFormData({
+      code: '',
       modele: '',
       marque: '',
       numero_serie: '',
@@ -166,6 +172,7 @@ const Materiel = () => {
     const fournisseur = fournisseurs.find((four) => four.nom === selectedMateriel.fournisseur);
     
     setFormData({
+      code: selectedMateriel.code || '',
       modele: selectedMateriel.modele || '',
       marque: selectedMateriel.marque || '',
       numero_serie: selectedMateriel.numero_serie || '',
@@ -186,6 +193,7 @@ const Materiel = () => {
   const columns = [
     { field: 'numero_inventaire', headerName: 'Numéro d\'Inventaire', width: 150 },
     { field: 'marque', headerName: 'Marque', width: 120 },
+    { field: 'code', headerName: 'code', width: 150 },
     { field: 'modele', headerName: 'Modèle', width: 150 },
     { field: 'numero_serie', headerName: 'Numéro de Série', width: 150 },
     { field: 'type', headerName: 'Catégorie', width: 200 },
@@ -264,6 +272,17 @@ const Materiel = () => {
                       type="text"
                       name="marque"
                       value={formData.marque}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Code</label>
+                    <input
+                      type="text"
+                      name="code"
+                      value={formData.code}
                       onChange={handleChange}
                       className="form-control"
                       required
@@ -421,6 +440,17 @@ const Materiel = () => {
                     />
                   </div>
                   <div className="mb-3">
+                    <label className="form-label">Code</label>
+                    <input
+                      type="text"
+                      name="code"
+                      value={formData.code}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
                     <label className="form-label">Modèle</label>
                     <input
                       type="text"
@@ -548,6 +578,7 @@ const Materiel = () => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };

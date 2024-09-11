@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEdit, FaUndo as FaTrash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Affectation = () => {
@@ -92,7 +94,7 @@ const Affectation = () => {
         ID_materiel: '',
         ID_utilisateur: '',
       });
-      alert('Affectation ajoutée avec succès !');
+      toast.success('Affectation ajoutée avec succès !');
       setShowModal(false);
       fetchAffectations();
       fetchMaterielsForAdd(); // Rafraîchir la liste des matériels non attribués
@@ -121,8 +123,9 @@ const Affectation = () => {
     if (window.confirm("Êtes-vous sûr de vouloir desaffecter cette materiel ?")) {
       try {
         await axios.delete(`http://localhost:8000/affectation/${id}`);
-        alert('materiel desaffecté avec succès !');
+        toast.success('materiel desaffecté avec succès !');
         fetchAffectations();
+        fetchHistorique();
       } catch (error) {
         console.error("Erreur lors de la suppression de l'affectation:", error);
       }
@@ -359,6 +362,7 @@ const Affectation = () => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };

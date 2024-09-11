@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Materiel from './pages/Materiel';
 import Inventaire from './pages/Inventaire';
 import Affectation from './pages/Affectation';
+import Utilisateur from './pages/User';
 import NotFound from './pages/NotFound';  // Import de la page 404
 import PrivateRoute from './routes/PrivateRoute';
 import Navbar from './components/Navbar';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/materiel" element={<PrivateRoute><Materiel /></PrivateRoute>} />
         <Route path="/inventaire" element={<PrivateRoute><Inventaire /></PrivateRoute>} />
         <Route path="/affectation" element={<PrivateRoute><Affectation /></PrivateRoute>} />
+        <Route path="/Utilisateur" element={<PrivateRoute><Utilisateur /></PrivateRoute>} />
         <Route path="/" element={<Login />} />
         <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         {/* Route catch-all pour les pages non trouvées */}
