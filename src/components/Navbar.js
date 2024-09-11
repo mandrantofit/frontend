@@ -9,6 +9,8 @@ import { FaSignOutAlt } from 'react-icons/fa';
 const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('type');
+    localStorage.removeItem('email');
     window.location.href = '/login'; // Redirige vers la page de login
   };
 
