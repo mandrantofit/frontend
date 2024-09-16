@@ -9,13 +9,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const Utilisateur = () => {
     const [users, setUsers] = useState([]);
     const [services, setServices] = useState([]);
+    const [lieux, setLieux] = useState([]); // Ajouter pour les lieux
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         nom: '',
         ID_service: '',
+        ID_lieux: '', // Ajouter ID_lieux
     });
-    const [selectedId, setSelectedId] = useState(null); // ID de l'utilisateur sélectionné pour modification
+    const [selectedId, setSelectedId] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
@@ -41,9 +43,20 @@ const Utilisateur = () => {
         }
     };
 
+    const fetchLieux = async () => { // Ajouter pour récupérer les lieux
+        try {
+            const response = await axios.get('http://localhost:8000/getUser/lieux');
+            setLieux(response.data);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des lieux:', error);
+            setError("Une erreur est survenue lors de la récupération des lieux.");
+        }
+    };
+
     useEffect(() => {
         fetchUsers();
         fetchServices();
+        fetchLieux(); // Ajouter pour les lieux
     }, []);
 
     const handleChange = (e) => {
@@ -54,7 +67,7 @@ const Utilisateur = () => {
         e.preventDefault();
         try {
             await axios.post('http://localhost:8000/getUser', formData);
-            setFormData({ nom: '', ID_service: '' });
+            setFormData({ nom: '', ID_service: '', ID_lieux: '' }); // Réinitialiser id_lieux
             toast.success('Utilisateur ajouté avec succès !');
             setShowModal(false);
             fetchUsers();
@@ -67,7 +80,7 @@ const Utilisateur = () => {
         e.preventDefault();
         try {
             await axios.put(`http://localhost:8000/getUser/${selectedId}`, formData);
-            setFormData({ nom: '', ID_service: '' });
+            setFormData({ nom: '', ID_service: '', ID_lieux: '' }); // Réinitialiser id_lieux
             toast.success('Utilisateur mis à jour avec succès !');
             setShowUpdateModal(false);
             fetchUsers();
@@ -90,24 +103,44 @@ const Utilisateur = () => {
 
     const handleEdit = (id) => {
         const selectedUser = users.find((user) => user.ID_utilisateur === id);
+        console.log('Utilisateur sélectionné pour modification :', selectedUser); // Affiche l'utilisateur sélectionné
+    
+        // Fonction pour obtenir l'ID du service à partir du nom
+        const getServiceIdFromName = (name) => {
+            const service = services.find((service) => service.Nom === name);
+            return service ? service.ID_service : '';
+        };
+    
+        // Fonction pour obtenir l'ID du lieu à partir du nom
+        const getLieuIdFromName = (name) => {
+            const lieu = lieux.find((lieu) => lieu.lieux === name);
+            return lieu ? lieu.ID_lieux : '';
+        };
+    
+        const serviceId = getServiceIdFromName(selectedUser.service);
+        const lieuId = getLieuIdFromName(selectedUser.lieux);
+    
         setFormData({
             nom: selectedUser.nom || '',
-            ID_service: selectedUser.ID_service || '', // Utilisation de l'ID du service
+            ID_service: serviceId || '', // Utilisation de l'ID du service
+            ID_lieux: lieuId || '', // Utilisation de l'ID du lieu
         });
         setSelectedId(id);
         setShowUpdateModal(true);
     };
+    
 
     const handleCancel = () => {
         setShowModal(false);
         setShowUpdateModal(false);
-        setFormData({ nom: '', ID_service: '' });
-        setSelectedId(null); // Réinitialiser la sélection
+        setFormData({ nom: '', ID_service: '', ID_lieux: '' });
+        setSelectedId(null);
     };
 
     const columns = [
         { field: 'nom', headerName: 'Nom', width: 200 },
-        { field: 'service', headerName: 'Service', width: 750 },
+        { field: 'service', headerName: 'Service', width: 250 },
+        { field: 'lieux', headerName: 'Lieux', width: 250 }, // Ajouter colonne pour lieux
         {
             field: 'actions',
             headerName: 'Actions',
@@ -198,8 +231,29 @@ const Utilisateur = () => {
                                             ))}
                                         </select>
                                     </div>
-
-                                    <button type="submit" className="btn btn-primary">Ajouter</button>
+                                    <div className="mb-3">
+                                        <label className="form-label">Lieux</label>
+                                        <select
+                                            name="ID_lieux"
+                                            value={formData.ID_lieux}
+                                            onChange={handleChange}
+                                            className="form-select"
+                                            required
+                                        >
+                                            <option value="">Sélectionner les lieux</option>
+                                            {lieux.map((lieu) => (
+                                                <option key={lieu.ID_lieux} value={lieu.ID_lieux}>
+                                                    {lieu.lieux}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary">
+                                        Ajouter
+                                    </button>
+                                    <button type="button" className="btn btn-secondary ms-2" onClick={handleCancel}>
+                                        Annuler
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -207,13 +261,13 @@ const Utilisateur = () => {
                 </div>
             )}
 
-            {/* Modal de modification */}
+            {/* Modal de mise à jour */}
             {showUpdateModal && (
                 <div className="modal show" style={{ display: 'block' }}>
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Modifier un Utilisateur</h5>
+                                <h5 className="modal-title">Mettre à jour l'Utilisateur</h5>
                                 <button type="button" className="btn-close" onClick={handleCancel}></button>
                             </div>
                             <div className="modal-body">
@@ -246,8 +300,29 @@ const Utilisateur = () => {
                                             ))}
                                         </select>
                                     </div>
-
-                                    <button type="submit" className="btn btn-primary">Mettre à jour</button>
+                                    <div className="mb-3">
+                                        <label className="form-label">Lieux</label>
+                                        <select
+                                            name="ID_lieux"
+                                            value={formData.ID_lieux}
+                                            onChange={handleChange}
+                                            className="form-select"
+                                            required
+                                        >
+                                            <option value="">Sélectionner les lieux</option>
+                                            {lieux.map((lieu) => (
+                                                <option key={lieu.ID_lieux} value={lieu.ID_lieux}>
+                                                    {lieu.lieux}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary">
+                                        Mettre à jour
+                                    </button>
+                                    <button type="button" className="btn btn-secondary ms-2" onClick={handleCancel}>
+                                        Annuler
+                                    </button>
                                 </form>
                             </div>
                         </div>

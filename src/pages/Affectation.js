@@ -150,12 +150,12 @@ const Affectation = () => {
     {
       field: 'modele',
       headerName: 'Modèle',
-      width: 220,
+      width: 170,
     },
     {
       field: 'utilisateur_nom',
       headerName: 'Utilisateur',
-      width: 220,
+      width: 350,
     },
     { field: 'date_affectation', headerName: 'Date d\'Affectation', width: 240 },
     {
@@ -178,8 +178,8 @@ const Affectation = () => {
   const historiqueColumns = [
     //{ field: 'ID_historique', headerName: 'ID Historique', width: 150 },
     { field: 'numero_inventaire', headerName: 'Numéro d\'Inventaire', width: 200 },
-    { field: 'modele', headerName: 'Modèle', width: 220 },
-    { field: 'utilisateur_nom', headerName: 'Utilisateur', width: 220 },
+    { field: 'modele', headerName: 'Modèle', width: 170 },
+    { field: 'utilisateur_nom', headerName: 'Utilisateur', width: 350 },
     { field: 'date_affectation', headerName: 'Date Affectation', width: 220 },
     { field: 'date_suppression', headerName: 'Date Désaffectation', width: 180 },
   ];
@@ -278,7 +278,7 @@ const Affectation = () => {
                       <option value="">Sélectionner un utilisateur</option>
                       {utilisateurs.map((utilisateur) => (
                         <option key={utilisateur.ID_utilisateur} value={utilisateur.ID_utilisateur}>
-                          {utilisateur.nom}
+                          {utilisateur.nom} - {utilisateur.service} - {utilisateur.lieux}
                         </option>
                       ))}
                     </select>
@@ -335,7 +335,7 @@ const Affectation = () => {
                       <option value="">Sélectionner un utilisateur</option>
                       {utilisateurs.map((utilisateur) => (
                         <option key={utilisateur.ID_utilisateur} value={utilisateur.ID_utilisateur}>
-                          {utilisateur.nom}
+                          {utilisateur.nom} - {utilisateur.service} - {utilisateur.lieux}
                         </option>
                       ))}
                     </select>
