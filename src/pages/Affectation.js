@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Affectation = () => {
+  
   const [affectations, setAffectations] = useState([]);
   const [materiels, setMateriels] = useState([]);
   const [historique, setHistorique] = useState([]);
@@ -30,7 +31,6 @@ const Affectation = () => {
       console.error('Erreur lors de la récupération de l\'historique:', error);
     }
   };
-
   const fetchAffectations = async () => {
     try {
       const response = await axios.get('http://localhost:8000/affectation');
@@ -41,7 +41,6 @@ const Affectation = () => {
       setLoading(false);
     }
   };
-
   const fetchMaterielsForAdd = async () => {
     try {
       const response = await axios.get('http://localhost:8000/materiel/non_attribue');
@@ -50,16 +49,14 @@ const Affectation = () => {
       console.error('Erreur lors de la récupération des matériels non attribués:', error);
     }
   };
-
   const fetchMaterielsForUpdate = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/materiel');
+      const response = await axios.get('http://localhost:8000/materiel/non_attribue');
       setMateriels(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des matériels:', error);
     }
   };
-
   const fetchUtilisateurs = async () => {
     try {
       const response = await axios.get('http://localhost:8000/getUser');
@@ -68,24 +65,20 @@ const Affectation = () => {
       console.error('Erreur lors de la récupération des utilisateurs:', error);
     }
   };
-
   useEffect(() => {
     fetchAffectations();
     fetchHistorique();
     fetchUtilisateurs();
-    fetchMaterielsForAdd(); // Initialement, on récupère les matériels non attribués pour l'ajout
+    fetchMaterielsForAdd();
   }, []);
-
   useEffect(() => {
     if (showUpdateModal) {
-      fetchMaterielsForUpdate(); // Récupère tous les matériels lors de la mise à jour
+      fetchMaterielsForUpdate();
     }
   }, [showUpdateModal]);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
@@ -102,7 +95,6 @@ const Affectation = () => {
       console.error('Erreur lors de l\'ajout de l\'affectation:', error);
     }
   };
-
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -118,7 +110,6 @@ const Affectation = () => {
       console.error('Erreur lors de la mise à jour de l\'affectation:', error);
     }
   };
-
   const handleDelete = async (id) => {
     if (window.confirm("Êtes-vous sûr de vouloir desaffecter cette materiel ?")) {
       try {
@@ -131,7 +122,6 @@ const Affectation = () => {
       }
     }
   };
-
   const handleCancel = () => {
     setShowModal(false);
     setShowUpdateModal(false);
@@ -141,7 +131,6 @@ const Affectation = () => {
       ID_utilisateur: '',
     });
   };
-
   const handleEdit = (id) => {
     const selectedAffectation = affectations.find((affectation) => affectation.ID_affectation === id);
     setFormData({
@@ -151,7 +140,6 @@ const Affectation = () => {
     setSelectedId(id);
     setShowUpdateModal(true);
   };
-
   const columns = [
     //{ field: 'ID_affectation', headerName: 'ID Affectation', width: 150 },
     {

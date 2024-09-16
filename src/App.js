@@ -25,7 +25,7 @@ function App() {
         <Route path="/materiel" element={<PrivateRoute><Materiel /></PrivateRoute>} />
         <Route path="/inventaire" element={<PrivateRoute><Inventaire /></PrivateRoute>} />
         <Route path="/affectation" element={<PrivateRoute><Affectation /></PrivateRoute>} />
-        <Route path="/Utilisateur" element={<PrivateRoute><Utilisateur /></PrivateRoute>} />
+        <Route path="/utilisateur" element={<PrivateRoute><Utilisateur /></PrivateRoute>} />
         <Route path="/" element={<Login />} />
         <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         {/* Route catch-all pour les pages non trouvées */}

@@ -116,7 +116,7 @@ const Admin = () => {
     <div className="container mt-4">
       <div className="card shadow-sm">
         <div className="card-header bg-dark text-white">
-          <h4 className="mb-0">Gestion des Utilisateurs</h4>
+          <h4 className="mb-0">Gestion des Utilisateurs de l'Application</h4>
         </div>
         <div className="card-body">
           <div className="d-flex justify-content-between mb-3">
