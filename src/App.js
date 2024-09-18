@@ -7,7 +7,8 @@ import Materiel from './pages/Materiel';
 import Inventaire from './pages/Inventaire';
 import Affectation from './pages/Affectation';
 import Utilisateur from './pages/User';
-import NotFound from './pages/NotFound';  // Import de la page 404
+import Aide from './pages/Aide'; // Importer la page Aide
+import NotFound from './pages/NotFound';
 import PrivateRoute from './routes/PrivateRoute';
 import Navbar from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,6 +29,7 @@ function App() {
         <Route path="/utilisateur" element={<PrivateRoute><Utilisateur /></PrivateRoute>} />
         <Route path="/" element={<Login />} />
         <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+        <Route path="/aide" element={<PrivateRoute><Aide /></PrivateRoute>} /> {/* Ajouter la route Aide */}
         {/* Route catch-all pour les pages non trouvées */}
         <Route path="*" element={<NotFound />} />
       </Routes>

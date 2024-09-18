@@ -29,6 +29,27 @@ const Materiel = () => {
   const [selectedId, setSelectedId] = useState(null); // ID du matériel sélectionné pour modification
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [marques, setMarques] = useState([]);
+  const [modeles, setModeles] = useState([]);
+
+  const fetchMarques = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/materiel/marque');
+      setMarques(response.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des marques:', error);
+    }
+  };
+
+  const fetchModeles = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/materiel/modele');
+      setModeles(response.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des modèles:', error);
+    }
+  };
+
 
   const fetchMateriel = async () => {
     try {
@@ -73,13 +94,16 @@ const Materiel = () => {
     fetchCategories();
     fetchEtats();
     fetchFournisseurs();
+    fetchMarques();
+    fetchModeles();
   }, []);
+
 
   const handleChange = (e) => {
     console.log('Changed:', e.target.name, e.target.value); // Debugging line
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -142,7 +166,7 @@ const Materiel = () => {
       }
     }
   };
-  
+
 
   const handleCancel = () => {
     setShowModal(false);
@@ -165,12 +189,12 @@ const Materiel = () => {
 
   const handleEdit = (id) => {
     const selectedMateriel = materiels.find((materiel) => materiel.ID_materiel === id);
-    
+
     // Mappings pour convertir les noms en IDs
     const categorie = categories.find((cat) => cat.type === selectedMateriel.type);
     const etat = etats.find((et) => et.description === selectedMateriel.etat);
     const fournisseur = fournisseurs.find((four) => four.nom === selectedMateriel.fournisseur);
-    
+
     setFormData({
       code: selectedMateriel.code || '',
       modele: selectedMateriel.modele || '',
@@ -184,10 +208,10 @@ const Materiel = () => {
       config: selectedMateriel.config || '',
       bon_de_livraison: selectedMateriel.bon_de_livraison || '',
     });
-    
+
     setSelectedId(id);
     setShowUpdateModal(true);
-};
+  };
 
 
   const columns = [
@@ -268,14 +292,18 @@ const Materiel = () => {
                   <h5 className='text-center'>Informations Générales</h5>
                   <div className="mb-3">
                     <label className="form-label">Marque</label>
-                    <input
-                      type="text"
+                    <select
                       name="marque"
                       value={formData.marque}
                       onChange={handleChange}
                       className="form-control"
                       required
-                    />
+                    >
+                      <option value="">Sélectionner une marque</option>
+                      {marques.map((marque) => (
+                        <option key={marque.ID_marque} value={marque.marque}>{marque.marque}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Code</label>
@@ -290,14 +318,18 @@ const Materiel = () => {
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Modèle</label>
-                    <input
-                      type="text"
+                    <select
                       name="modele"
                       value={formData.modele}
                       onChange={handleChange}
                       className="form-control"
                       required
-                    />
+                    >
+                      <option value="">Sélectionner un modèle</option>
+                      {modeles.map((modele) => (
+                        <option key={modele.ID_modele} value={modele.modele}>{modele.modele}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Numéro de Série</label>
@@ -430,14 +462,18 @@ const Materiel = () => {
                   <h5 className='text-center'>Informations Générales</h5>
                   <div className="mb-3">
                     <label className="form-label">Marque</label>
-                    <input
-                      type="text"
+                    <select
                       name="marque"
                       value={formData.marque}
                       onChange={handleChange}
                       className="form-control"
                       required
-                    />
+                    >
+                      <option value="">Sélectionner une marque</option>
+                      {marques.map((marque) => (
+                        <option key={marque.ID_marque} value={marque.marque}>{marque.marque}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Code</label>
@@ -452,14 +488,18 @@ const Materiel = () => {
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Modèle</label>
-                    <input
-                      type="text"
+                    <select
                       name="modele"
                       value={formData.modele}
                       onChange={handleChange}
                       className="form-control"
                       required
-                    />
+                    >
+                      <option value="">Sélectionner un modèle</option>
+                      {modeles.map((modele) => (
+                        <option key={modele.ID_modele} value={modele.modele}>{modele.modele}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Numéro de Série</label>

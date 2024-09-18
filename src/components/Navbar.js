@@ -40,12 +40,16 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/utilisateur">Utilisateur</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/aide">Aide</Link> {/* Ajouter le lien vers Aide */}
+            </li>
             {/* Afficher le lien Admin uniquement si l'utilisateur est un admin */}
             {isAdmin && (
               <li className="nav-item">
                 <Link className="nav-link" to="/admin">Admin</Link>
               </li>
             )}
+            
           </ul>
           {/* Déplacement du bouton Logout dans la liste des liens */}
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">

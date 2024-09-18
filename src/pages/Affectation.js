@@ -46,6 +46,7 @@ const Affectation = () => {
     try {
       const response = await axios.get('http://localhost:8000/materiel/non_attribue');
       setMateriels(response.data);
+      fetchAffectations();
     } catch (error) {
       toast.error('Erreur lors de la récupération des matériels non attribués:', error);
     }
