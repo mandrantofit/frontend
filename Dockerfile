@@ -22,7 +22,7 @@ FROM nginx:alpine
 # Copier les fichiers construits de l'étape précédente vers le répertoire de Nginx
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Exposer le port 80
+# Exposer le port 81 pour eviter d'autre conflit avec les autre host (80)
 EXPOSE 81
 
 # Commande pour démarrer Nginx
